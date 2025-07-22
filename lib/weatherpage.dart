@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'weather_service.dart';
 import 'weatherhelper.dart';
+import 'package:lottie/lottie.dart';
 
 class WeatherHome extends StatefulWidget {
   const WeatherHome({super.key});
@@ -52,6 +53,24 @@ void initState() {
   }
 }
 
+String getWeatherCondition(String? mainCondition) {
+  if (mainCondition == null) return 'lib/assets/sunny.json';
+
+  switch (mainCondition.toLowerCase()) {
+    case 'clouds':
+      return 'lib/assets/Weather-windy.json';
+    case 'rain':
+    case 'rainy':
+      return 'lib/assets/rainy icon.json';
+    case 'clear':
+    case 'sunny':
+      return 'lib/assets/sunny.json';
+    default:
+      return 'lib/assets/sunny.json';
+  }
+}
+
+
 
  @override
 Widget build(BuildContext context) {
@@ -90,8 +109,16 @@ Widget build(BuildContext context) {
             Text("🌡️ Temp: ${_weatherData!['main']['temp']} °C"),
             Text("☁️ Condition: ${_weatherData!['weather'][0]['description']}"),
           ],
+          SizedBox(
+    height: 150,
+    child: Lottie.asset(
+      getWeatherCondition(_weatherData!['weather'][0]['main']),
+      fit: BoxFit.contain,
+    ),
+          )
         ],
       ),
+      
     ),
   );
 }
